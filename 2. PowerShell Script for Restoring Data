@@ -1,0 +1,13 @@
+# Define variables
+$resourceGroup = "YourResourceGroup"
+$backupVaultName = "YourRecoveryServicesVaultName"
+$containerName = "YourStorageContainerName"
+$protectedItemName = "YourProtectedItemName"
+$recoveryPoint = "RecoveryPointName" # Replace with the actual recovery point you want to restore
+
+# List available recovery points
+Get-AzRecoveryServicesBackupRecoveryPoint -Container $containerName -Item $protectedItemName -Vault $backupVaultName -ResourceGroupName $resourceGroup
+
+# Restore data from a specific recovery point
+$recoveryPoint = Get-AzRecoveryServicesBackupRecoveryPoint -Container $containerName -Item $protectedItemName -Vault $backupVaultName -ResourceGroupName $resourceGroup -Name $recoveryPoint
+Restore-AzRecoveryServicesBackupItem -RecoveryPoint $recoveryPoint -Vault $backupVaultName -ResourceGroupName $resourceGroup -TargetStorageAccountName "RestoredStorageAccountName" -TargetStorageContainerName "RestoredStorageContainerName"
