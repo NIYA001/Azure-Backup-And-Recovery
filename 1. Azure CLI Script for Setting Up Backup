@@ -1,0 +1,17 @@
+# Define variables
+resourceGroup="YourResourceGroup"
+vmName="YourVirtualMachineName"
+backupVaultName="YourRecoveryServicesVaultName"
+policyName="YourBackupPolicyName"
+storageAccountName="YourStorageAccountName"
+containerName="YourStorageContainerName"
+protectedItemName="YourProtectedItemName"
+
+# Create a recovery services vault
+az backup vault create --name $backupVaultName --resource-group $resourceGroup --location EastUS
+
+# Enable backup for the virtual machine
+az backup protection enable-for-vm --resource-group $resourceGroup --vault-name $backupVaultName --policy-name $policyName --vm $vmName --retain-until-recovery 365
+
+# Configure backup storage
+az backup protection backup-now --resource-group $resourceGroup --vault-name $backupVaultName --container-name $containerName --item-name $protectedItemName
